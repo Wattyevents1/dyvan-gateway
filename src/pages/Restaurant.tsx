@@ -88,7 +88,7 @@ const Restaurant = () => {
                         {item.description && <p className="text-muted-foreground text-sm mt-1">{item.description}</p>}
                         <span className="text-muted-foreground text-xs mt-2 inline-block bg-secondary px-2 py-0.5 rounded">{item.category}</span>
                       </div>
-                      <span className="text-primary font-bold text-lg font-heading">KES {item.price.toLocaleString()}</span>
+                      <span className="text-primary font-bold text-lg font-heading">UGX {item.price.toLocaleString()}</span>
                     </div>
                   </motion.div>
                 ))}

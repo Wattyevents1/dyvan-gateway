@@ -47,7 +47,7 @@ const AdminOrders = () => {
                   <p className="text-foreground font-medium">{o.customer_name}</p>
                   <p className="text-muted-foreground text-xs">{o.customer_phone}</p>
                 </td>
-                <td className="px-4 py-3 text-primary font-semibold">${o.total_amount}</td>
+                <td className="px-4 py-3 text-primary font-semibold">UGX {o.total_amount.toLocaleString()}</td>
                 <td className="px-4 py-3">
                   <select value={o.status} onChange={(e) => updateStatus(o.id, "status", e.target.value)} className="bg-secondary border border-gold rounded px-2 py-1 text-xs text-foreground">
                     <option value="pending">Pending</option>
