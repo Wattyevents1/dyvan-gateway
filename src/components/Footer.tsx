@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Facebook, Instagram, Twitter } from "lucide-react";
+import logo from "@/assets/logo.jpg";
 
 const Footer = () => (
   <footer className="bg-secondary border-t border-gold">
     <div className="container mx-auto px-4 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
-          <h3 className="font-heading text-2xl font-bold text-gradient-gold mb-4">Dyvan Lounge</h3>
+          <div className="flex items-center gap-3 mb-4">
+            <img src={logo} alt="Dyvan Lounge" className="h-12 w-12 rounded-full object-cover" />
+            <h3 className="font-heading text-2xl font-bold text-gradient-gold">Dyvan Lounge</h3>
+          </div>
           <p className="text-muted-foreground text-sm leading-relaxed">
             Experience luxury, comfort, and the finest hospitality in the heart of Sironko District, Uganda.
           </p>
