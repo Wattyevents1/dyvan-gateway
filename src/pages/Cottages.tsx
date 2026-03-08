@@ -6,7 +6,7 @@ import { Wifi, Car, Coffee, Tv, Bath, Mountain } from "lucide-react";
 import SectionHeading from "@/components/SectionHeading";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import heroBg from "@/assets/hero-bg.jpg";
+import cottagesBg from "@/assets/cottages-bg.jpg";
 import cottage1 from "@/assets/cottage-1.jpg";
 
 type Cottage = Tables<"cottages">;
