@@ -50,6 +50,16 @@ const Index = () => {
   return (
     <div className="overflow-hidden">
       <SEO title="Dyvan Lounge & Cottages | Luxury Stay in Sironko, Uganda" description="Experience luxury cottages, fine dining, and premium bar services at Dyvan Lounge & Cottages on Mbale–Moroto Road, Sironko District, Uganda." path="/" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "LodgingBusiness",
+        "name": "Dyvan Lounge & Cottages",
+        "description": "Luxury cottages, fine dining, and premium bar services in Sironko, Uganda.",
+        "address": { "@type": "PostalAddress", "streetAddress": "Mbale–Moroto Road", "addressLocality": "Sironko", "addressRegion": "Eastern", "addressCountry": "UG" },
+        "hasMap": "https://maps.google.com/?q=Sironko+District+Uganda",
+        "priceRange": "$$",
+        "servesCuisine": ["Ugandan", "International"]
+      }) }} />
       {/* Hero */}
       <section className="relative h-screen flex items-center justify-center">
         <div className="absolute inset-0">
