@@ -20,14 +20,17 @@ const fadeUp = {
   transition: { duration: 0.7 },
 };
 
+const ITEMS_PER_PAGE = 12;
+
 const Gallery = () => {
   const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("All");
   const [lightbox, setLightbox] = useState<GalleryPhoto | null>(null);
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchPhotos = async () => {
       const { data } = await supabase
         .from("gallery_photos")
         .select("id, image_url, caption, category")
@@ -37,11 +40,18 @@ const Gallery = () => {
       setPhotos((data as GalleryPhoto[]) || []);
       setLoading(false);
     };
-    fetch();
+    fetchPhotos();
   }, []);
+
+  // Reset visible count when category changes
+  useEffect(() => {
+    setVisibleCount(ITEMS_PER_PAGE);
+  }, [active]);
 
   const categories = ["All", ...new Set(photos.map((p) => p.category))];
   const filtered = active === "All" ? photos : photos.filter((p) => p.category === active);
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   return (
     <div>
