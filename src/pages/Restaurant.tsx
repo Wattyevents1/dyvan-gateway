@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import SectionHeading from "@/components/SectionHeading";
 import type { Tables } from "@/integrations/supabase/types";
-import restaurantImg from "@/assets/restaurant.jpg";
+import restaurantBg from "@/assets/restaurant-bg.jpg";
 
 type MenuItem = Tables<"menu_items">;
 
@@ -46,7 +46,7 @@ const Restaurant = () => {
     <div>
       <SEO title="Restaurant & Menu" description="Savor exquisite local and international cuisine at Dyvan Lounge restaurant in Sironko, Uganda. Fresh ingredients, expert chefs, unforgettable flavors." path="/restaurant" />
       <section className="relative h-[60vh] flex items-center justify-center">
-        <img src={restaurantImg} alt="Restaurant" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={restaurantBg} alt="Restaurant" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-background/70" />
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="relative z-10 text-center">
           <p className="text-primary text-sm uppercase tracking-[0.4em] mb-2">Dining</p>
