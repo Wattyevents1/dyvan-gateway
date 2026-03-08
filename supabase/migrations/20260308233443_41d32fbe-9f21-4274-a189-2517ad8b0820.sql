@@ -1,0 +1,1 @@
+UPDATE public.cottages SET image_url = '/images/standard-room.jpg' WHERE id = 'b3d9afaf-5089-41d7-9213-f6ed2c798ae4';
