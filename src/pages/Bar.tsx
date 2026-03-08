@@ -48,7 +48,7 @@ const Bar = () => {
     <div>
       <SEO title="Bar & Lounge" description="Enjoy fresh juices, refreshments, live music, and vibrant nightlife at Dyvan Bar & Lounge in Sironko, Uganda." path="/bar" />
       <section className="relative h-[60vh] flex items-center justify-center">
-        <img src={barImg} alt="Bar & Lounge" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={barBg} alt="Bar & Lounge" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-background/70" />
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="relative z-10 text-center">
           <p className="text-primary text-sm uppercase tracking-[0.4em] mb-2">Drinks & Entertainment</p>
