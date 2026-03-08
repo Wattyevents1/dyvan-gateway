@@ -9,6 +9,7 @@ const navLinks = [
   { to: "/cottages", label: "Cottages" },
   { to: "/restaurant", label: "Restaurant" },
   { to: "/bar", label: "Bar & Lounge" },
+  { to: "/gallery", label: "Gallery" },
   { to: "/booking", label: "Book Now" },
   { to: "/contact", label: "Contact" },
 ];

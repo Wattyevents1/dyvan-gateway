@@ -79,6 +79,7 @@ const App = () => (
               <Route path="reservations" element={<AdminReservations />} />
               <Route path="messages" element={<AdminMessages />} />
               <Route path="events" element={<AdminEvents />} />
+              <Route path="gallery" element={<AdminGallery />} />
               <Route path="users" element={<AdminUsers />} />
             </Route>
             <Route path="/*" element={<PublicLayout />} />

@@ -24,6 +24,7 @@ const menuItems = [
   { title: "Reservations", url: "/admin/reservations", icon: CalendarDays },
   { title: "Messages", url: "/admin/messages", icon: Mail },
   { title: "Events", url: "/admin/events", icon: PartyPopper },
+  { title: "Gallery", url: "/admin/gallery", icon: ImageIcon },
   { title: "Users", url: "/admin/users", icon: Users },
 ];
 
