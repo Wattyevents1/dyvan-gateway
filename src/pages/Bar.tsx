@@ -75,7 +75,7 @@ const Bar = () => {
           </div>
           <div className="mt-8 text-center">
             <p className="text-muted-foreground text-sm flex items-center justify-center gap-2">
-              <Phone size={14} className="text-primary" /> For deliveries, call <span className="text-primary font-semibold">0756 091987</span>
+              <Phone size={14} className="text-primary" /> For deliveries, call <span className="text-primary font-semibold">+256 704 240 261</span>
             </p>
           </div>
         </div>
