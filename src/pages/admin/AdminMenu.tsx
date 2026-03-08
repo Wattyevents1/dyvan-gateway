@@ -1,0 +1,132 @@
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2 } from "lucide-react";
+import type { Tables } from "@/integrations/supabase/types";
+
+type MenuItem = Tables<"menu_items">;
+
+const categories = ["Local Dishes", "International", "Soft Drinks", "Alcoholic Drinks"];
+
+const AdminMenu = () => {
+  const [items, setItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState<MenuItem | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ name: "", description: "", price: "", category: "Local Dishes", image_url: "", is_available: true });
+
+  const fetchItems = async () => {
+    const { data } = await supabase.from("menu_items").select("*").order("category").order("name");
+    setItems(data || []);
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchItems(); }, []);
+
+  const resetForm = () => {
+    setForm({ name: "", description: "", price: "", category: "Local Dishes", image_url: "", is_available: true });
+    setEditing(null);
+    setShowForm(false);
+  };
+
+  const handleEdit = (item: MenuItem) => {
+    setForm({ name: item.name, description: item.description || "", price: String(item.price), category: item.category, image_url: item.image_url || "", is_available: item.is_available });
+    setEditing(item);
+    setShowForm(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload = { name: form.name, description: form.description || null, price: parseFloat(form.price), category: form.category, image_url: form.image_url || null, is_available: form.is_available };
+    if (editing) {
+      const { error } = await supabase.from("menu_items").update(payload).eq("id", editing.id);
+      if (error) { toast.error("Failed to update"); return; }
+      toast.success("Menu item updated");
+    } else {
+      const { error } = await supabase.from("menu_items").insert(payload);
+      if (error) { toast.error("Failed to create"); return; }
+      toast.success("Menu item created");
+    }
+    resetForm();
+    fetchItems();
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this menu item?")) return;
+    await supabase.from("menu_items").delete().eq("id", id);
+    toast.success("Deleted");
+    fetchItems();
+  };
+
+  const inputClass = "bg-secondary border border-gold rounded-sm px-3 py-2 text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary w-full";
+
+  if (loading) return <div className="text-muted-foreground animate-pulse">Loading...</div>;
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="font-heading text-3xl font-bold text-gradient-gold">Menu Management</h1>
+        <button onClick={() => { resetForm(); setShowForm(!showForm); }} className="flex items-center gap-2 bg-gradient-gold text-primary-foreground px-4 py-2 text-sm font-semibold rounded-sm hover:opacity-90">
+          <Plus size={16} /> Add Item
+        </button>
+      </div>
+
+      {showForm && (
+        <form onSubmit={handleSubmit} className="bg-card p-6 rounded-lg border border-gold mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" placeholder="Item Name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClass} />
+          <input type="number" placeholder="Price" required step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className={inputClass} />
+          <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className={inputClass}>
+            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <input type="text" placeholder="Image URL" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} className={inputClass} />
+          <label className="flex items-center gap-2 text-sm text-foreground">
+            <input type="checkbox" checked={form.is_available} onChange={(e) => setForm({ ...form, is_available: e.target.checked })} className="accent-primary" />
+            Available
+          </label>
+          <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={inputClass + " md:col-span-2 resize-none"} rows={2} />
+          <div className="md:col-span-2 flex gap-3">
+            <button type="submit" className="bg-gradient-gold text-primary-foreground px-6 py-2 text-sm font-semibold rounded-sm hover:opacity-90">{editing ? "Update" : "Create"}</button>
+            <button type="button" onClick={resetForm} className="border border-gold text-foreground px-6 py-2 text-sm rounded-sm hover:bg-secondary">Cancel</button>
+          </div>
+        </form>
+      )}
+
+      <div className="bg-card rounded-lg border border-gold overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-secondary">
+            <tr>
+              <th className="text-left px-4 py-3 text-muted-foreground font-medium">Name</th>
+              <th className="text-left px-4 py-3 text-muted-foreground font-medium">Category</th>
+              <th className="text-left px-4 py-3 text-muted-foreground font-medium">Price</th>
+              <th className="text-left px-4 py-3 text-muted-foreground font-medium">Status</th>
+              <th className="text-right px-4 py-3 text-muted-foreground font-medium">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr key={item.id} className="border-t border-border hover:bg-secondary/50">
+                <td className="px-4 py-3 text-foreground font-medium">{item.name}</td>
+                <td className="px-4 py-3 text-muted-foreground">{item.category}</td>
+                <td className="px-4 py-3 text-primary font-semibold">${item.price}</td>
+                <td className="px-4 py-3">
+                  <span className={`px-2 py-0.5 rounded text-xs font-medium ${item.is_available ? "bg-green-500/20 text-green-400" : "bg-destructive/20 text-destructive"}`}>
+                    {item.is_available ? "Available" : "Unavailable"}
+                  </span>
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <button onClick={() => handleEdit(item)} className="text-muted-foreground hover:text-primary mr-2"><Pencil size={16} /></button>
+                  <button onClick={() => handleDelete(item.id)} className="text-muted-foreground hover:text-destructive"><Trash2 size={16} /></button>
+                </td>
+              </tr>
+            ))}
+            {items.length === 0 && (
+              <tr><td colSpan={5} className="text-center py-8 text-muted-foreground">No menu items yet</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default AdminMenu;
