@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import SectionHeading from "@/components/SectionHeading";
 import type { Tables } from "@/integrations/supabase/types";
-import restaurantImg from "@/assets/restaurant.jpg";
+import restaurantBg from "@/assets/restaurant-bg.jpg";
 
 type MenuItem = Tables<"menu_items">;
 
