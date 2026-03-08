@@ -1,12 +1,18 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Bed, UtensilsCrossed, Wine, Star, ArrowRight } from "lucide-react";
+import { Bed, UtensilsCrossed, Wine, Star, ArrowRight, CalendarDays } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import cottage1 from "@/assets/cottage-1.jpg";
-import cottage2 from "@/assets/cottage-2.jpg";
 import restaurant from "@/assets/restaurant.jpg";
 import bar from "@/assets/bar.jpg";
 import SectionHeading from "@/components/SectionHeading";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
+
+type Cottage = Tables<"cottages">;
+type MenuItem = Tables<"menu_items">;
+type Event = Tables<"events">;
 
 const fadeUp = {
   initial: { opacity: 0, y: 40 },
@@ -15,12 +21,6 @@ const fadeUp = {
   transition: { duration: 0.7 },
 };
 
-const cottages = [
-  { name: "Deluxe Suite", price: "$120", img: cottage1, desc: "King bed, private balcony, mountain views" },
-  { name: "Premium Suite", price: "$180", img: cottage2, desc: "Spacious suite with lounge area & jacuzzi" },
-  { name: "Royal Cottage", price: "$250", img: cottage1, desc: "Full cottage with kitchen & living room" },
-];
-
 const testimonials = [
   { name: "Sarah M.", text: "An absolute paradise! The cottages are stunning and the food is incredible.", rating: 5 },
   { name: "John K.", text: "Best lounge experience in Eastern Uganda. The bar service is world-class.", rating: 5 },
@@ -28,6 +28,24 @@ const testimonials = [
 ];
 
 const Index = () => {
+  const [cottages, setCottages] = useState<Cottage[]>([]);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      const [cottageRes, menuRes, eventRes] = await Promise.all([
+        supabase.from("cottages").select("*").eq("is_available", true).order("price_per_night").limit(3),
+        supabase.from("menu_items").select("*").eq("is_available", true).order("created_at", { ascending: false }).limit(6),
+        supabase.from("events").select("*").eq("is_active", true).gte("event_date", new Date().toISOString().split("T")[0]).order("event_date").limit(3),
+      ]);
+      setCottages(cottageRes.data || []);
+      setMenuItems(menuRes.data || []);
+      setEvents(eventRes.data || []);
+    };
+    fetchAll();
+  }, []);
+
   return (
     <div className="overflow-hidden">
       {/* Hero */}
@@ -51,16 +69,10 @@ const Index = () => {
             Luxury accommodation, exquisite dining, and unforgettable experiences in Sironko, Uganda
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-            <Link
-              to="/booking"
-              className="bg-gradient-gold text-primary-foreground px-8 py-4 font-semibold tracking-wide uppercase text-sm rounded-sm hover:opacity-90 transition-opacity shadow-gold"
-            >
+            <Link to="/booking" className="bg-gradient-gold text-primary-foreground px-8 py-4 font-semibold tracking-wide uppercase text-sm rounded-sm hover:opacity-90 transition-opacity shadow-gold">
               Book Your Stay
             </Link>
-            <Link
-              to="/restaurant"
-              className="border border-gold-strong text-foreground px-8 py-4 font-semibold tracking-wide uppercase text-sm rounded-sm hover:bg-primary/10 transition-colors"
-            >
+            <Link to="/restaurant" className="border border-gold-strong text-foreground px-8 py-4 font-semibold tracking-wide uppercase text-sm rounded-sm hover:bg-primary/10 transition-colors">
               View Menu
             </Link>
           </div>
@@ -102,25 +114,86 @@ const Index = () => {
           <SectionHeading subtitle="Accommodation" title="Featured Cottages" description="Each cottage is designed for ultimate comfort with breathtaking views of the Elgon region." />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {cottages.map((c, i) => (
-              <motion.div key={i} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.15 }} className="bg-card rounded-lg overflow-hidden border border-gold group">
+              <motion.div key={c.id} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.15 }} className="bg-card rounded-lg overflow-hidden border border-gold group">
                 <div className="overflow-hidden h-56">
-                  <img src={c.img} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img src={c.image_url || cottage1} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-6">
                   <div className="flex justify-between items-start">
                     <h3 className="font-heading text-xl font-bold text-foreground">{c.name}</h3>
-                    <span className="text-primary font-bold text-lg">{c.price}<span className="text-muted-foreground text-xs font-normal">/night</span></span>
+                    <span className="text-primary font-bold text-lg">UGX {c.price_per_night.toLocaleString()}<span className="text-muted-foreground text-xs font-normal">/night</span></span>
                   </div>
-                  <p className="text-muted-foreground text-sm mt-2">{c.desc}</p>
+                  <p className="text-muted-foreground text-sm mt-2 line-clamp-2">{c.description}</p>
                   <Link to="/booking" className="mt-4 inline-block bg-gradient-gold text-primary-foreground px-6 py-2 text-sm font-semibold rounded-sm hover:opacity-90 transition-opacity">
                     Book Now
                   </Link>
                 </div>
               </motion.div>
             ))}
+            {cottages.length === 0 && (
+              <div className="md:col-span-3 text-center text-muted-foreground py-8">Loading cottages...</div>
+            )}
           </div>
         </div>
       </section>
+
+      {/* Menu Highlights */}
+      <section className="py-24 bg-secondary">
+        <div className="container mx-auto px-4">
+          <SectionHeading subtitle="Dining" title="Menu Highlights" description="A taste of what awaits you at our restaurant." />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {menuItems.map((item, i) => (
+              <motion.div key={item.id} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.1 }} className="bg-card p-6 rounded-lg border border-gold">
+                {item.image_url && (
+                  <img src={item.image_url} alt={item.name} className="w-full h-36 object-cover rounded-md mb-4" />
+                )}
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-heading text-lg font-semibold text-foreground">{item.name}</h3>
+                    {item.description && <p className="text-muted-foreground text-sm mt-1 line-clamp-2">{item.description}</p>}
+                    <span className="text-muted-foreground text-xs mt-2 inline-block bg-secondary px-2 py-0.5 rounded">{item.category}</span>
+                  </div>
+                  <span className="text-primary font-bold text-lg font-heading">UGX {item.price.toLocaleString()}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          {menuItems.length > 0 && (
+            <div className="text-center mt-10">
+              <Link to="/restaurant" className="border border-gold-strong text-foreground px-8 py-3 font-semibold uppercase text-sm rounded-sm hover:bg-primary/10 transition-colors inline-flex items-center gap-2">
+                View Full Menu <ArrowRight size={14} />
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Upcoming Events */}
+      {events.length > 0 && (
+        <section className="py-24">
+          <div className="container mx-auto px-4">
+            <SectionHeading subtitle="What's On" title="Upcoming Events" description="Join us for exciting events and unforgettable nights." />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {events.map((ev, i) => (
+                <motion.div key={ev.id} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.15 }} className="bg-card rounded-lg overflow-hidden border border-gold">
+                  {ev.poster_url && (
+                    <img src={ev.poster_url} alt={ev.title} className="w-full h-48 object-cover" />
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 text-primary text-sm mb-2">
+                      <CalendarDays size={14} />
+                      <span>{new Date(ev.event_date).toLocaleDateString("en-UG", { weekday: "short", month: "short", day: "numeric" })}</span>
+                      {ev.event_time && <span>• {ev.event_time}</span>}
+                    </div>
+                    <h3 className="font-heading text-xl font-bold text-foreground">{ev.title}</h3>
+                    {ev.description && <p className="text-muted-foreground text-sm mt-2 line-clamp-3">{ev.description}</p>}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Testimonials */}
       <section className="py-24 bg-secondary">
