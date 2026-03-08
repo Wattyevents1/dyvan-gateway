@@ -37,7 +37,7 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
         <Link to="/" className="flex items-center gap-3">
           <img src={logo} alt="Dyvan Lounge" className="h-14 w-14 rounded-full object-cover" />
-          <span className="font-heading text-2xl font-bold text-gradient-gold tracking-wider">Dyvan Lounge</span>
+          <span className="font-heading text-2xl font-bold text-gradient-gold tracking-wider">Dyvan Lounge & Cottages</span>
         </Link>
 
         {/* Desktop */}
