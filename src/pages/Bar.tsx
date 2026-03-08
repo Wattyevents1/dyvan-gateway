@@ -5,7 +5,7 @@ import { Music, Calendar, Clock, Phone } from "lucide-react";
 import SectionHeading from "@/components/SectionHeading";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import barImg from "@/assets/bar.jpg";
+import barBg from "@/assets/bar-bg.jpg";
 
 type MenuItem = Tables<"menu_items">;
 type Event = Tables<"events">;
