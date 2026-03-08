@@ -15,6 +15,7 @@ import Cottages from "./pages/Cottages";
 import Restaurant from "./pages/Restaurant";
 import Bar from "./pages/Bar";
 import Booking from "./pages/Booking";
+import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
 import AdminOverview from "./pages/admin/AdminOverview";
@@ -26,6 +27,7 @@ import AdminReservations from "./pages/admin/AdminReservations";
 import AdminMessages from "./pages/admin/AdminMessages";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminGallery from "./pages/admin/AdminGallery";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +49,7 @@ const PublicLayout = () => {
           <Route path="/cottages" element={<Cottages />} />
           <Route path="/restaurant" element={<Restaurant />} />
           <Route path="/bar" element={<Bar />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
@@ -76,6 +79,7 @@ const App = () => (
               <Route path="reservations" element={<AdminReservations />} />
               <Route path="messages" element={<AdminMessages />} />
               <Route path="events" element={<AdminEvents />} />
+              <Route path="gallery" element={<AdminGallery />} />
               <Route path="users" element={<AdminUsers />} />
             </Route>
             <Route path="/*" element={<PublicLayout />} />

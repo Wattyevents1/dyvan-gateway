@@ -1,4 +1,4 @@
-import { LayoutDashboard, Home, UtensilsCrossed, CalendarDays, ShoppingCart, Mail, PartyPopper, Users, LogOut } from "lucide-react";
+import { LayoutDashboard, Home, UtensilsCrossed, CalendarDays, ShoppingCart, Mail, PartyPopper, Users, LogOut, ImageIcon } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -24,6 +24,7 @@ const menuItems = [
   { title: "Reservations", url: "/admin/reservations", icon: CalendarDays },
   { title: "Messages", url: "/admin/messages", icon: Mail },
   { title: "Events", url: "/admin/events", icon: PartyPopper },
+  { title: "Gallery", url: "/admin/gallery", icon: ImageIcon },
   { title: "Users", url: "/admin/users", icon: Users },
 ];
 
