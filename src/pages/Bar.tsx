@@ -48,7 +48,7 @@ const Bar = () => (
                   <h3 className="font-heading text-xl font-semibold text-foreground">{d.name}</h3>
                   <p className="text-muted-foreground text-sm mt-1">{d.desc}</p>
                 </div>
-                <span className="text-primary font-bold text-lg font-heading">${d.price}</span>
+                <span className="text-primary font-bold text-lg font-heading">UGX {d.price.toLocaleString()}</span>
               </div>
             </motion.div>
           ))}
