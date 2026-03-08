@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2 } from "lucide-react";
+import ImageUpload from "@/components/admin/ImageUpload";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Cottage = Tables<"cottages">;
@@ -84,7 +85,7 @@ const AdminCottages = () => {
           <input type="number" placeholder="Price per Night" required value={form.price_per_night} onChange={(e) => setForm({ ...form, price_per_night: e.target.value })} className={inputClass} />
           <input type="number" placeholder="Max Guests" value={form.max_guests} onChange={(e) => setForm({ ...form, max_guests: e.target.value })} className={inputClass} />
           <input type="number" placeholder="Size (sqm)" value={form.size_sqm} onChange={(e) => setForm({ ...form, size_sqm: e.target.value })} className={inputClass} />
-          <input type="text" placeholder="Image URL" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} className={inputClass} />
+          <ImageUpload value={form.image_url} onChange={(url) => setForm({ ...form, image_url: url })} folder="cottages" />
           <label className="flex items-center gap-2 text-sm text-foreground">
             <input type="checkbox" checked={form.is_available} onChange={(e) => setForm({ ...form, is_available: e.target.checked })} className="accent-primary" />
             Available
