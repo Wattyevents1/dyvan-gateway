@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import SEO from "@/components/SEO";
 import SectionHeading from "@/components/SectionHeading";
 import heroBg from "@/assets/hero-bg.jpg";
 import restaurant from "@/assets/restaurant.jpg";
@@ -17,6 +18,7 @@ const gallery = [heroBg, cottage1, restaurant, bar, cottage2];
 
 const About = () => (
   <div>
+    <SEO title="About Us" description="Discover the story behind Dyvan Lounge & Cottages — luxury hospitality, authentic Ugandan warmth, and breathtaking Elgon views in Sironko." path="/about" />
     {/* Hero */}
     <section className="relative h-[60vh] flex items-center justify-center">
       <img src={heroBg} alt="About Dyvan Lounge" className="absolute inset-0 w-full h-full object-cover" />

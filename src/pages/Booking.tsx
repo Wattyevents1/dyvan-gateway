@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,6 +41,7 @@ const Booking = () => {
 
   return (
     <div>
+      <SEO title="Book Your Stay" description="Reserve your luxury cottage at Dyvan Lounge & Cottages. Easy online booking for accommodation in Sironko, Eastern Uganda." path="/booking" />
       <section className="relative h-[60vh] flex items-center justify-center">
         <img src={heroBg} alt="Booking" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-background/70" />

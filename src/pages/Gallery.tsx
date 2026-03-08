@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import SectionHeading from "@/components/SectionHeading";
@@ -44,6 +45,7 @@ const Gallery = () => {
 
   return (
     <div>
+      <SEO title="Photo Gallery" description="Browse photos of Dyvan Lounge & Cottages — luxury rooms, fine dining, scenic views, and memorable events in Sironko, Uganda." path="/gallery" />
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center">
         <img src={heroBg} alt="Gallery" className="absolute inset-0 w-full h-full object-cover" />

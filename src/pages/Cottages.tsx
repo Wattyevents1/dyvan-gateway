@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Wifi, Car, Coffee, Tv, Bath, Mountain } from "lucide-react";
@@ -45,6 +46,7 @@ const Cottages = () => {
 
   return (
     <div>
+      <SEO title="Luxury Cottages" description="Book our luxury cottages in Sironko, Uganda. Mountain views, modern amenities, and authentic Ugandan hospitality at Dyvan Lounge & Cottages." path="/cottages" />
       <section className="relative h-[60vh] flex items-center justify-center">
         <img src={heroBg} alt="Dyvan Cottages" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-background/70" />
