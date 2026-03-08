@@ -16,7 +16,7 @@ const Footer = () => (
           </p>
           <div className="flex gap-4 mt-6">
             <a href="https://www.facebook.com/dyvanlounge1" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={20} /></a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Instagram size={20} /></a>
+            <a href="https://www.instagram.com/dyvanlounge1/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Instagram size={20} /></a>
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Twitter size={20} /></a>
           </div>
         </div>
