@@ -80,8 +80,8 @@ const Navbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`text-sm font-medium tracking-wide uppercase transition-colors ${
-                    location.pathname === link.to ? "text-primary" : "text-foreground/70 hover:text-primary"
+                  className={`text-base font-bold tracking-wide uppercase transition-colors ${
+                    location.pathname === link.to ? "text-primary" : "text-foreground hover:text-primary"
                   }`}
                 >
                   {link.label}
