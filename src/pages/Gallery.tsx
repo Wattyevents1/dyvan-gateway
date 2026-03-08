@@ -96,11 +96,11 @@ const Gallery = () => {
 
               {/* Masonry-ish Grid */}
               <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-                {filtered.map((photo, i) => (
+                {visible.map((photo, i) => (
                   <motion.div
                     key={photo.id}
                     {...fadeUp}
-                    transition={{ delay: i * 0.05 }}
+                    transition={{ delay: Math.min(i, 6) * 0.05 }}
                     className="break-inside-avoid cursor-pointer group"
                     onClick={() => setLightbox(photo)}
                   >
@@ -110,6 +110,7 @@ const Gallery = () => {
                         alt={photo.caption || "Gallery photo"}
                         className="w-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
+                        decoding="async"
                       />
                       {photo.caption && (
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -120,6 +121,17 @@ const Gallery = () => {
                   </motion.div>
                 ))}
               </div>
+
+              {hasMore && (
+                <div className="text-center mt-10">
+                  <button
+                    onClick={() => setVisibleCount((c) => c + ITEMS_PER_PAGE)}
+                    className="px-8 py-3 text-sm font-medium rounded-sm border border-gold text-foreground/70 hover:text-primary hover:border-gold-strong transition-all"
+                  >
+                    Load More Photos
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>
