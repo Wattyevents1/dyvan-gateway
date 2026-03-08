@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import SectionHeading from "@/components/SectionHeading";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -9,9 +10,27 @@ const Booking = () => {
     name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: "deluxe", payment: "pay-on-arrival",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Booking request submitted! We'll confirm via email shortly.");
+    setIsLoading(true);
+    const { error } = await supabase.from("bookings").insert({
+      guest_name: form.name,
+      guest_email: form.email,
+      guest_phone: form.phone,
+      check_in: form.checkin,
+      check_out: form.checkout,
+      num_guests: parseInt(form.guests),
+      payment_method: form.payment,
+    });
+    setIsLoading(false);
+    if (error) {
+      toast.error("Failed to submit booking. Please try again.");
+    } else {
+      toast.success("Booking request submitted! We'll confirm via email shortly.");
+      setForm({ name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: "deluxe", payment: "pay-on-arrival" });
+    }
   };
 
   const update = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
