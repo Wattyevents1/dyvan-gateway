@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminLayout from "./components/admin/AdminLayout";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Cottages from "./pages/Cottages";
@@ -16,7 +17,15 @@ import Bar from "./pages/Bar";
 import Booking from "./pages/Booking";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminOverview from "./pages/admin/AdminOverview";
+import AdminCottages from "./pages/admin/AdminCottages";
+import AdminBookings from "./pages/admin/AdminBookings";
+import AdminMenu from "./pages/admin/AdminMenu";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminReservations from "./pages/admin/AdminReservations";
+import AdminMessages from "./pages/admin/AdminMessages";
+import AdminEvents from "./pages/admin/AdminEvents";
+import AdminUsers from "./pages/admin/AdminUsers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,14 +36,10 @@ const ScrollToTop = () => {
   return null;
 };
 
-const Layout = () => {
-  const { pathname } = useLocation();
-  const isAdmin = pathname.startsWith("/admin");
-
+const PublicLayout = () => {
   return (
     <>
-      <ScrollToTop />
-      {!isAdmin && <Navbar />}
+      <Navbar />
       <main>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -44,12 +49,10 @@ const Layout = () => {
           <Route path="/bar" element={<Bar />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {!isAdmin && <Footer />}
+      <Footer />
     </>
   );
 };
@@ -61,7 +64,22 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <Layout />
+          <ScrollToTop />
+          <Routes>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+              <Route index element={<AdminOverview />} />
+              <Route path="cottages" element={<AdminCottages />} />
+              <Route path="bookings" element={<AdminBookings />} />
+              <Route path="menu" element={<AdminMenu />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="reservations" element={<AdminReservations />} />
+              <Route path="messages" element={<AdminMessages />} />
+              <Route path="events" element={<AdminEvents />} />
+              <Route path="users" element={<AdminUsers />} />
+            </Route>
+            <Route path="/*" element={<PublicLayout />} />
+          </Routes>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
