@@ -46,11 +46,11 @@ const Navbar = () => {
             <Link
               key={link.to}
               to={link.to}
-              className={`text-sm font-medium tracking-wide uppercase transition-colors duration-300 ${
+              className={`text-base font-bold tracking-wide uppercase transition-colors duration-300 ${
                 location.pathname === link.to
                   ? "text-primary"
-                  : "text-foreground/70 hover:text-primary"
-              } ${link.to === "/booking" ? "bg-gradient-gold text-primary-foreground px-5 py-2 rounded-sm font-semibold hover:opacity-90" : ""}`}
+                  : "text-foreground hover:text-primary"
+              } ${link.to === "/booking" ? "bg-gradient-gold text-primary-foreground px-5 py-2 rounded-sm hover:opacity-90" : ""}`}
             >
               {link.label}
             </Link>
