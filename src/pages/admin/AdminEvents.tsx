@@ -75,7 +75,7 @@ const AdminEvents = () => {
           <input type="text" placeholder="Event Title" required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className={inputClass} />
           <input type="date" required value={form.event_date} onChange={(e) => setForm({ ...form, event_date: e.target.value })} className={inputClass} />
           <input type="text" placeholder="Event Time (e.g. 7 PM – 11 PM)" value={form.event_time} onChange={(e) => setForm({ ...form, event_time: e.target.value })} className={inputClass} />
-          <input type="text" placeholder="Poster URL" value={form.poster_url} onChange={(e) => setForm({ ...form, poster_url: e.target.value })} className={inputClass} />
+          <ImageUpload value={form.poster_url} onChange={(url) => setForm({ ...form, poster_url: url })} folder="events" />
           <label className="flex items-center gap-2 text-sm text-foreground">
             <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} className="accent-primary" />
             Active
