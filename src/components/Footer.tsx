@@ -12,7 +12,7 @@ const Footer = () => (
             <h3 className="font-heading text-2xl font-bold text-gradient-gold">Dyvan Lounge</h3>
           </div>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            Experience luxury, comfort, and the finest hospitality in the heart of Sironko District, Uganda.
+            Dine. Meet. Memories
           </p>
           <div className="flex gap-4 mt-6">
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={20} /></a>
