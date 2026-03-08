@@ -49,6 +49,7 @@ const PublicLayout = () => {
           <Route path="/cottages" element={<Cottages />} />
           <Route path="/restaurant" element={<Restaurant />} />
           <Route path="/bar" element={<Bar />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
