@@ -108,7 +108,7 @@ const AdminMenu = () => {
               <tr key={item.id} className="border-t border-border hover:bg-secondary/50">
                 <td className="px-4 py-3 text-foreground font-medium">{item.name}</td>
                 <td className="px-4 py-3 text-muted-foreground">{item.category}</td>
-                <td className="px-4 py-3 text-primary font-semibold">${item.price}</td>
+                <td className="px-4 py-3 text-primary font-semibold">UGX {item.price.toLocaleString()}</td>
                 <td className="px-4 py-3">
                   <span className={`px-2 py-0.5 rounded text-xs font-medium ${item.is_available ? "bg-green-500/20 text-green-400" : "bg-destructive/20 text-destructive"}`}>
                     {item.is_available ? "Available" : "Unavailable"}

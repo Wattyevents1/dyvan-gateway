@@ -113,7 +113,7 @@ const AdminCottages = () => {
             {cottages.map((c) => (
               <tr key={c.id} className="border-t border-border hover:bg-secondary/50">
                 <td className="px-4 py-3 text-foreground font-medium">{c.name}</td>
-                <td className="px-4 py-3 text-primary font-semibold">${c.price_per_night}</td>
+                <td className="px-4 py-3 text-primary font-semibold">UGX {c.price_per_night.toLocaleString()}</td>
                 <td className="px-4 py-3 text-foreground hidden md:table-cell">{c.max_guests}</td>
                 <td className="px-4 py-3">
                   <span className={`px-2 py-0.5 rounded text-xs font-medium ${c.is_available ? "bg-green-500/20 text-green-400" : "bg-destructive/20 text-destructive"}`}>
