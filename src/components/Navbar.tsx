@@ -36,7 +36,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
         <Link to="/" className="flex items-center gap-3">
-          <img src={logo} alt="Dyvan Lounge" className="h-10 w-10 rounded-full object-cover" />
+          <img src={logo} alt="Dyvan Lounge" className="h-14 w-14 rounded-full object-cover" />
           <span className="font-heading text-2xl font-bold text-gradient-gold tracking-wider">Dyvan Lounge</span>
         </Link>
 
@@ -46,11 +46,11 @@ const Navbar = () => {
             <Link
               key={link.to}
               to={link.to}
-              className={`text-sm font-medium tracking-wide uppercase transition-colors duration-300 ${
+              className={`text-base font-bold tracking-wide uppercase transition-colors duration-300 ${
                 location.pathname === link.to
                   ? "text-primary"
-                  : "text-foreground/70 hover:text-primary"
-              } ${link.to === "/booking" ? "bg-gradient-gold text-primary-foreground px-5 py-2 rounded-sm font-semibold hover:opacity-90" : ""}`}
+                  : "text-foreground hover:text-primary"
+              } ${link.to === "/booking" ? "bg-gradient-gold text-primary-foreground px-5 py-2 rounded-sm hover:opacity-90" : ""}`}
             >
               {link.label}
             </Link>
@@ -80,8 +80,8 @@ const Navbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`text-sm font-medium tracking-wide uppercase transition-colors ${
-                    location.pathname === link.to ? "text-primary" : "text-foreground/70 hover:text-primary"
+                  className={`text-base font-bold tracking-wide uppercase transition-colors ${
+                    location.pathname === link.to ? "text-primary" : "text-foreground hover:text-primary"
                   }`}
                 >
                   {link.label}
