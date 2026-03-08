@@ -135,7 +135,6 @@ const ReservationForm = () => {
         </motion.form>
       </div>
     </section>
-    </div>
   );
 };
 
