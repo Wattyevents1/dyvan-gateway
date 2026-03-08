@@ -27,6 +27,7 @@ import AdminReservations from "./pages/admin/AdminReservations";
 import AdminMessages from "./pages/admin/AdminMessages";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminGallery from "./pages/admin/AdminGallery";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
