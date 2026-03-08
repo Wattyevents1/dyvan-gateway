@@ -15,6 +15,7 @@ import Cottages from "./pages/Cottages";
 import Restaurant from "./pages/Restaurant";
 import Bar from "./pages/Bar";
 import Booking from "./pages/Booking";
+import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
 import AdminOverview from "./pages/admin/AdminOverview";
