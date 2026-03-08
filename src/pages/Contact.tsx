@@ -74,7 +74,7 @@ const Contact = () => {
               <div className="flex flex-col gap-6 mb-8">
                 {[
                   { icon: MapPin, label: "Location", value: "Mbale–Moroto Road, Sironko District, Uganda" },
-                  { icon: Phone, label: "Phone", value: "+256 700 000 000" },
+                  { icon: Phone, label: "Phone", value: "+256 704 240 261" },
                   { icon: Mail, label: "Email", value: "info@dyvanlounge.com" },
                   { icon: Clock, label: "Hours", value: "Mon–Fri 7AM–11PM | Sat–Sun 8AM–12AM" },
                 ].map((info, i) => (
