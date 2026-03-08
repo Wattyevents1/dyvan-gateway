@@ -37,7 +37,7 @@ const Footer = () => (
           <div className="flex flex-col gap-3 text-sm text-muted-foreground">
             <div className="flex items-start gap-2"><MapPin size={16} className="text-primary mt-0.5 shrink-0" /> Mbale–Moroto Road, Sironko District, Uganda</div>
             <div className="flex items-center gap-2"><Phone size={16} className="text-primary shrink-0" /> +256 704 240 261</div>
-            <div className="flex items-center gap-2"><Mail size={16} className="text-primary shrink-0" /> info@dyvanlounge.com</div>
+            <div className="flex items-center gap-2"><Mail size={16} className="text-primary shrink-0" /> dyvanlounge1@gmail.com</div>
           </div>
         </div>
 
