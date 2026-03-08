@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import SEO from "@/components/SEO";
 import { Music, Calendar, Clock } from "lucide-react";
 import SectionHeading from "@/components/SectionHeading";
 import barImg from "@/assets/bar.jpg";
