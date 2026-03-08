@@ -16,10 +16,24 @@ const fadeUp = {
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you soon.");
-    setForm({ name: "", email: "", phone: "", message: "" });
+    setIsLoading(true);
+    const { error } = await supabase.from("contact_messages").insert({
+      name: form.name,
+      email: form.email,
+      phone: form.phone || null,
+      message: form.message,
+    });
+    setIsLoading(false);
+    if (error) {
+      toast.error("Failed to send message. Please try again.");
+    } else {
+      toast.success("Message sent! We'll get back to you soon.");
+      setForm({ name: "", email: "", phone: "", message: "" });
+    }
   };
 
   const update = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
