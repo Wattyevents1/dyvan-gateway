@@ -44,6 +44,7 @@ const Restaurant = () => {
 
   return (
     <div>
+      <SEO title="Restaurant & Menu" description="Savor exquisite local and international cuisine at Dyvan Lounge restaurant in Sironko, Uganda. Fresh ingredients, expert chefs, unforgettable flavors." path="/restaurant" />
       <section className="relative h-[60vh] flex items-center justify-center">
         <img src={restaurantImg} alt="Restaurant" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-background/70" />

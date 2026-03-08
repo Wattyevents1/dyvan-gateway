@@ -49,6 +49,7 @@ const Index = () => {
 
   return (
     <div className="overflow-hidden">
+      <SEO title="Dyvan Lounge & Cottages | Luxury Stay in Sironko, Uganda" description="Experience luxury cottages, fine dining, and premium bar services at Dyvan Lounge & Cottages on Mbale–Moroto Road, Sironko District, Uganda." path="/" />
       {/* Hero */}
       <section className="relative h-screen flex items-center justify-center">
         <div className="absolute inset-0">

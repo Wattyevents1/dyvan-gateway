@@ -44,6 +44,7 @@ const Contact = () => {
 
   return (
     <div>
+      <SEO title="Contact Us" description="Get in touch with Dyvan Lounge & Cottages. Located on Mbale–Moroto Road, Sironko District, Uganda. Call, email, or visit us." path="/contact" />
       <section className="relative h-[60vh] flex items-center justify-center">
         <img src={heroBg} alt="Contact" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-background/70" />

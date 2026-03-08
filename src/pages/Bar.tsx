@@ -28,6 +28,7 @@ const events = [
 
 const Bar = () => (
   <div>
+    <SEO title="Bar & Lounge" description="Enjoy signature cocktails, live music, and vibrant nightlife at Dyvan Bar & Lounge in Sironko, Uganda. Jazz nights, Afrobeats, and premium drinks." path="/bar" />
     <section className="relative h-[60vh] flex items-center justify-center">
       <img src={barImg} alt="Bar & Lounge" className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-background/70" />
