@@ -107,7 +107,7 @@ const Cottages = () => {
                     )}
                     <div className="flex items-center gap-6">
                       <span className="text-primary font-heading text-3xl font-bold">
-                        KES {c.price_per_night.toLocaleString()}
+                        UGX {c.price_per_night.toLocaleString()}
                         <span className="text-muted-foreground text-sm font-body font-normal">/night</span>
                       </span>
                       <Link to="/booking" className="bg-gradient-gold text-primary-foreground px-8 py-3 font-semibold text-sm rounded-sm hover:opacity-90 transition-opacity">
