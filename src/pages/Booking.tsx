@@ -12,7 +12,7 @@ type Cottage = Tables<"cottages">;
 const Booking = () => {
   const [cottages, setCottages] = useState<Cottage[]>([]);
   const [form, setForm] = useState({
-    name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: "", payment: "pay-on-arrival",
+    name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: "", payment: "cash",
   });
 
   const [isLoading, setIsLoading] = useState(false);
