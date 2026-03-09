@@ -125,6 +125,7 @@ const Bar = () => {
         )}
       </AnimatePresence>
     </div>
+  );
 };
 
 export default Bar;
