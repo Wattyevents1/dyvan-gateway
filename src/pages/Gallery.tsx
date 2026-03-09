@@ -119,7 +119,7 @@ const Gallery = () => {
                     {...fadeUp}
                     transition={{ delay: Math.min(i, 6) * 0.05 }}
                     className="break-inside-avoid cursor-pointer group"
-                    onClick={() => setLightbox(photo)}
+                    onClick={() => setLightbox(filtered.indexOf(photo))}
                   >
                     <div className="rounded-lg overflow-hidden border border-gold relative">
                       <img
