@@ -37,7 +37,7 @@ const testimonials = [
 
 const Index = () => {
   const [cottages, setCottages] = useState<Cottage[]>([]);
-  const [events, setEvents] = useState<Event[]>([]);
+  
   const [weeklyEvents, setWeeklyEvents] = useState<WeeklyEvent[]>([]);
 
   useEffect(() => {
