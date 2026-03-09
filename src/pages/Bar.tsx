@@ -84,7 +84,7 @@ const Bar = () => {
           <SectionHeading subtitle="Gallery" title="Our Space" description="Take a look at our bar and lounge." />
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
             {barImages.map((img, i) => (
-              <motion.div key={i} {...fadeUp} transition={{ delay: Math.min(i, 6) * 0.05 }} className="break-inside-avoid cursor-pointer group" onClick={() => setLightbox(img)}>
+              <motion.div key={i} {...fadeUp} transition={{ delay: Math.min(i, 6) * 0.05 }} className="break-inside-avoid cursor-pointer group" onClick={() => setLightbox(i)}>
                 <div className="rounded-lg overflow-hidden border border-gold">
                   <img src={img.src} alt={img.alt} className="w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                 </div>
