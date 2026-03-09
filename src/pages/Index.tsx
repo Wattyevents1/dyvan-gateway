@@ -50,7 +50,7 @@ const Index = () => {
       ]);
       setCottages(cottageRes.data || []);
       setEvents(eventRes.data || []);
-      setWeeklyEvents((weeklyRes.data as WeeklyEvent[]) || []);
+      setWeeklyEvents((weeklyRes.data as unknown as WeeklyEvent[]) || []);
     };
     fetchAll();
   }, []);
