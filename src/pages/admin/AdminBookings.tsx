@@ -70,8 +70,8 @@ const AdminBookings = () => {
               <tr key={b.id} className="border-t border-border hover:bg-secondary/50">
                 <td className="px-4 py-3 text-foreground font-medium">{b.guest_name}</td>
                 <td className="px-4 py-3">
-                  <p className="text-foreground text-xs">{b.guest_email}</p>
-                  <p className="text-muted-foreground text-xs">{b.guest_phone}</p>
+                  <a href={`mailto:${b.guest_email}`} className="text-primary text-xs hover:underline block">{b.guest_email}</a>
+                  <a href={`tel:${b.guest_phone}`} className="text-primary text-xs hover:underline block">{b.guest_phone}</a>
                 </td>
                 <td className="px-4 py-3 text-foreground text-xs">{b.check_in} → {b.check_out}</td>
                 <td className="px-4 py-3 text-foreground">{b.num_guests}</td>
