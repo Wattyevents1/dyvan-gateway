@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SEO from "@/components/SEO";
-import { motion } from "framer-motion";
-import { Music, Calendar, Clock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Music, Calendar, Clock, X } from "lucide-react";
 import SectionHeading from "@/components/SectionHeading";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
@@ -33,6 +33,7 @@ const fadeUp = {
 
 const Bar = () => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,9 +67,9 @@ const Bar = () => {
           <SectionHeading subtitle="Gallery" title="Our Space" description="Take a look at our bar and lounge." />
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
             {barImages.map((img, i) => (
-              <motion.div key={i} {...fadeUp} transition={{ delay: Math.min(i, 6) * 0.05 }} className="break-inside-avoid">
+              <motion.div key={i} {...fadeUp} transition={{ delay: Math.min(i, 6) * 0.05 }} className="break-inside-avoid cursor-pointer group" onClick={() => setLightbox(img)}>
                 <div className="rounded-lg overflow-hidden border border-gold">
-                  <img src={img.src} alt={img.alt} className="w-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
+                  <img src={img.src} alt={img.alt} className="w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                 </div>
               </motion.div>
             ))}
@@ -102,6 +103,27 @@ const Bar = () => {
           </div>
         </section>
       )}
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background/95 flex items-center justify-center p-4"
+            onClick={() => setLightbox(null)}
+          >
+            <button className="absolute top-6 right-6 text-foreground hover:text-primary" onClick={() => setLightbox(null)}>
+              <X size={28} />
+            </button>
+            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="max-w-4xl max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
+              <img src={lightbox.src} alt={lightbox.alt} className="max-w-full max-h-[80vh] object-contain rounded-lg" />
+              <p className="text-center text-foreground/80 mt-4 text-sm">{lightbox.alt}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
