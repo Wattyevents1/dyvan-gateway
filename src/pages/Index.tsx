@@ -14,6 +14,15 @@ import type { Tables } from "@/integrations/supabase/types";
 type Cottage = Tables<"cottages">;
 type Event = Tables<"events">;
 
+interface WeeklyEvent {
+  id: string;
+  day: string;
+  title: string;
+  description: string | null;
+  is_active: boolean;
+  sort_order: number;
+}
+
 const fadeUp = {
   initial: { opacity: 0, y: 40 },
   whileInView: { opacity: 1, y: 0 },
