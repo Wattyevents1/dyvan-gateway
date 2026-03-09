@@ -163,19 +163,15 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <SectionHeading subtitle="What's On" title="Weekly Lineup" description="Join us for exciting events and unforgettable nights." />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { day: "Every Wednesday", title: "Live Bands Night", desc: "Enjoy live music performances from top local bands." },
-              { day: "Every Thursday", title: "Oldies Night", desc: "A throwback to the golden classics — sing along to your favorite oldies." },
-              { day: "Sundown Sets", title: "DJ Set by DVJ Divon", desc: "Catch the vibe with electrifying sundown DJ sets by DVJ Divon." },
-            ].map((item, i) => (
-              <motion.div key={i} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.15 }} className="bg-card rounded-lg overflow-hidden border border-gold">
+            {weeklyEvents.map((item, i) => (
+              <motion.div key={item.id} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.15 }} className="bg-card rounded-lg overflow-hidden border border-gold">
                 <div className="p-6">
                   <div className="flex items-center gap-2 text-primary text-sm mb-2">
                     <CalendarDays size={14} />
                     <span>{item.day}</span>
                   </div>
                   <h3 className="font-heading text-xl font-bold text-foreground">{item.title}</h3>
-                  <p className="text-muted-foreground text-sm mt-2">{item.desc}</p>
+                  {item.description && <p className="text-muted-foreground text-sm mt-2">{item.description}</p>}
                 </div>
               </motion.div>
             ))}
