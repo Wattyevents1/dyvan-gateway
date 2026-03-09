@@ -68,7 +68,7 @@ const Gallery = () => {
   useEffect(() => {
     setVisibleCount(ITEMS_PER_PAGE);
   }, [active]);
-  const hasMore = visibleCount < filtered.length;
+
 
   return (
     <div>
