@@ -12,7 +12,6 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Cottage = Tables<"cottages">;
-type Event = Tables<"events">;
 
 interface WeeklyEvent {
   id: string;
@@ -38,18 +37,16 @@ const testimonials = [
 
 const Index = () => {
   const [cottages, setCottages] = useState<Cottage[]>([]);
-  const [events, setEvents] = useState<Event[]>([]);
+  
   const [weeklyEvents, setWeeklyEvents] = useState<WeeklyEvent[]>([]);
 
   useEffect(() => {
     const fetchAll = async () => {
-      const [cottageRes, eventRes, weeklyRes] = await Promise.all([
+      const [cottageRes, weeklyRes] = await Promise.all([
         supabase.from("cottages").select("*").eq("is_available", true).order("price_per_night").limit(3),
-        supabase.from("events").select("*").eq("is_active", true).gte("event_date", new Date().toISOString().split("T")[0]).order("event_date").limit(3),
         supabase.from("weekly_events" as any).select("*").eq("is_active", true).order("sort_order"),
       ]);
       setCottages(cottageRes.data || []);
-      setEvents(eventRes.data || []);
       setWeeklyEvents((weeklyRes.data as unknown as WeeklyEvent[]) || []);
     };
     fetchAll();
@@ -177,32 +174,6 @@ const Index = () => {
             ))}
           </div>
 
-          {/* Dynamic upcoming events */}
-          {events.length > 0 && (
-            <>
-              <div className="mt-16">
-                <SectionHeading subtitle="Coming Up" title="Upcoming Events" />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {events.map((ev, i) => (
-                  <motion.div key={ev.id} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.15 }} className="bg-card rounded-lg overflow-hidden border border-gold">
-                    {ev.poster_url && (
-                      <img src={ev.poster_url} alt={ev.title} className="w-full h-48 object-cover" />
-                    )}
-                    <div className="p-6">
-                      <div className="flex items-center gap-2 text-primary text-sm mb-2">
-                        <CalendarDays size={14} />
-                        <span>{new Date(ev.event_date).toLocaleDateString("en-UG", { weekday: "short", month: "short", day: "numeric" })}</span>
-                        {ev.event_time && <span>• {ev.event_time}</span>}
-                      </div>
-                      <h3 className="font-heading text-xl font-bold text-foreground">{ev.title}</h3>
-                      {ev.description && <p className="text-muted-foreground text-sm mt-2 line-clamp-3">{ev.description}</p>}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </>
-          )}
         </div>
       </section>
 
