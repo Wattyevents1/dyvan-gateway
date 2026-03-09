@@ -33,6 +33,7 @@ const fadeUp = {
 
 const Bar = () => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
