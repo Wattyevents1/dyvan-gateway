@@ -29,7 +29,6 @@ const testimonials = [
 
 const Index = () => {
   const [cottages, setCottages] = useState<Cottage[]>([]);
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
