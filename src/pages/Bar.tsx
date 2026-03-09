@@ -1,14 +1,28 @@
 import { useEffect, useState } from "react";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
-import { Music, Calendar, Clock, Phone } from "lucide-react";
+import { Music, Calendar, Clock } from "lucide-react";
 import SectionHeading from "@/components/SectionHeading";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 const barBg = "/gallery/bar-cocktail-bw.jpg";
 
-type MenuItem = Tables<"menu_items">;
 type Event = Tables<"events">;
+
+const barImages = [
+  { src: "/gallery/bar-cocktail-bw.jpg", alt: "Cocktail bar" },
+  { src: "/gallery/bar-menu-cocktails.jpg", alt: "Bar cocktails" },
+  { src: "/gallery/bar-menu-drink.jpg", alt: "Bar drink" },
+  { src: "/gallery/bar-menu-spread.jpg", alt: "Bar menu spread" },
+  { src: "/gallery/bar-shots.jpg", alt: "Bar shots" },
+  { src: "/gallery/lounge-blue-sofas.jpg", alt: "Lounge blue sofas" },
+  { src: "/gallery/lounge-exterior-1.jpg", alt: "Lounge exterior" },
+  { src: "/gallery/lounge-exterior-2.jpg", alt: "Lounge exterior" },
+  { src: "/gallery/lounge-exterior-3.jpg", alt: "Lounge exterior" },
+  { src: "/gallery/lounge-swings.jpg", alt: "Lounge swings" },
+  { src: "/gallery/lounge-vip-seating.jpg", alt: "VIP seating" },
+  { src: "/gallery/lounge-wide-view.jpg", alt: "Lounge wide view" },
+];
 
 const fadeUp = {
   initial: { opacity: 0, y: 40 },
@@ -18,28 +32,18 @@ const fadeUp = {
 };
 
 const Bar = () => {
-  const [drinks, setDrinks] = useState<MenuItem[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const [drinksRes, eventsRes] = await Promise.all([
-        supabase
-          .from("menu_items")
-          .select("*")
-          .eq("is_available", true)
-          .in("category", ["Refreshments"])
-          .order("name"),
-        supabase
-          .from("events")
-          .select("*")
-          .eq("is_active", true)
-          .gte("event_date", new Date().toISOString().split("T")[0])
-          .order("event_date")
-          .limit(6),
-      ]);
-      setDrinks(drinksRes.data || []);
-      setEvents(eventsRes.data || []);
+      const { data } = await supabase
+        .from("events")
+        .select("*")
+        .eq("is_active", true)
+        .gte("event_date", new Date().toISOString().split("T")[0])
+        .order("event_date")
+        .limit(6);
+      setEvents(data || []);
     };
     fetchData();
   }, []);
@@ -56,27 +60,18 @@ const Bar = () => {
         </motion.div>
       </section>
 
-      {/* Refreshments */}
+      {/* Gallery */}
       <section className="py-24">
         <div className="container mx-auto px-4">
-          <SectionHeading subtitle="Drinks" title="Refreshments" description="Fresh juices and beverages to cool you down." />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {drinks.map((d, i) => (
-              <motion.div key={d.id} {...fadeUp} transition={{ delay: i * 0.1 }} className="bg-card p-6 rounded-lg border border-gold hover:shadow-gold transition-shadow">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-heading text-xl font-semibold text-foreground">{d.name}</h3>
-                    {d.description && <p className="text-muted-foreground text-sm mt-1">{d.description}</p>}
-                  </div>
-                  <span className="text-primary font-bold text-lg font-heading whitespace-nowrap">UGX {d.price.toLocaleString()}</span>
+          <SectionHeading subtitle="Gallery" title="Our Space" description="Take a look at our bar and lounge." />
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+            {barImages.map((img, i) => (
+              <motion.div key={i} {...fadeUp} transition={{ delay: Math.min(i, 6) * 0.05 }} className="break-inside-avoid">
+                <div className="rounded-lg overflow-hidden border border-gold">
+                  <img src={img.src} alt={img.alt} className="w-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
                 </div>
               </motion.div>
             ))}
-          </div>
-          <div className="mt-8 text-center">
-            <p className="text-muted-foreground text-sm flex items-center justify-center gap-2">
-              <Phone size={14} className="text-primary" /> For deliveries, call <span className="text-primary font-semibold">+256 704 240 261</span>
-            </p>
           </div>
         </div>
       </section>
