@@ -26,8 +26,25 @@ const Gallery = () => {
   const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("All");
-  const [lightbox, setLightbox] = useState<GalleryPhoto | null>(null);
+  const [lightbox, setLightbox] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+
+  const navigateLightbox = (dir: number) => {
+    if (lightbox === null) return;
+    const next = (lightbox + dir + filtered.length) % filtered.length;
+    setLightbox(next);
+  };
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") navigateLightbox(-1);
+      else if (e.key === "ArrowRight") navigateLightbox(1);
+      else if (e.key === "Escape") setLightbox(null);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightbox, filtered]);
 
   useEffect(() => {
     const fetchPhotos = async () => {
