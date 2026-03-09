@@ -103,8 +103,28 @@ const Bar = () => {
           </div>
         </section>
       )}
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background/95 flex items-center justify-center p-4"
+            onClick={() => setLightbox(null)}
+          >
+            <button className="absolute top-6 right-6 text-foreground hover:text-primary" onClick={() => setLightbox(null)}>
+              <X size={28} />
+            </button>
+            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="max-w-4xl max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
+              <img src={lightbox.src} alt={lightbox.alt} className="max-w-full max-h-[80vh] object-contain rounded-lg" />
+              <p className="text-center text-foreground/80 mt-4 text-sm">{lightbox.alt}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  );
 };
 
 export default Bar;
