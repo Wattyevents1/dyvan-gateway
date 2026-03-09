@@ -12,7 +12,6 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Cottage = Tables<"cottages">;
-type MenuItem = Tables<"menu_items">;
 type Event = Tables<"events">;
 
 const fadeUp = {
@@ -30,18 +29,15 @@ const testimonials = [
 
 const Index = () => {
   const [cottages, setCottages] = useState<Cottage[]>([]);
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     const fetchAll = async () => {
-      const [cottageRes, menuRes, eventRes] = await Promise.all([
+      const [cottageRes, eventRes] = await Promise.all([
         supabase.from("cottages").select("*").eq("is_available", true).order("price_per_night").limit(3),
-        supabase.from("menu_items").select("*").eq("is_available", true).order("created_at", { ascending: false }).limit(6),
         supabase.from("events").select("*").eq("is_active", true).gte("event_date", new Date().toISOString().split("T")[0]).order("event_date").limit(3),
       ]);
       setCottages(cottageRes.data || []);
-      setMenuItems(menuRes.data || []);
       setEvents(eventRes.data || []);
     };
     fetchAll();
@@ -149,36 +145,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Menu Highlights */}
-      <section className="py-24 bg-secondary">
-        <div className="container mx-auto px-4">
-          <SectionHeading subtitle="Dining" title="Menu Highlights" description="A taste of what awaits you at our restaurant." />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {menuItems.map((item, i) => (
-              <motion.div key={item.id} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.1 }} className="bg-card p-6 rounded-lg border border-gold">
-                {item.image_url && (
-                  <img src={item.image_url} alt={item.name} className="w-full h-36 object-cover rounded-md mb-4" />
-                )}
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-heading text-lg font-semibold text-foreground">{item.name}</h3>
-                    {item.description && <p className="text-muted-foreground text-sm mt-1 line-clamp-2">{item.description}</p>}
-                    <span className="text-muted-foreground text-xs mt-2 inline-block bg-secondary px-2 py-0.5 rounded">{item.category}</span>
-                  </div>
-                  <span className="text-primary font-bold text-lg font-heading">UGX {item.price.toLocaleString()}</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          {menuItems.length > 0 && (
-            <div className="text-center mt-10">
-              <Link to="/restaurant" className="border border-gold-strong text-foreground px-8 py-3 font-semibold uppercase text-sm rounded-sm hover:bg-primary/10 transition-colors inline-flex items-center gap-2">
-                View Full Menu <ArrowRight size={14} />
-              </Link>
-            </div>
-          )}
-        </div>
-      </section>
 
       {/* Upcoming Events */}
       {events.length > 0 && (
