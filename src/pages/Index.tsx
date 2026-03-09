@@ -23,8 +23,8 @@ const fadeUp = {
 
 const testimonials = [
   { name: "Sarah M.", text: "An absolute paradise! The cottages are stunning and the food is incredible.", rating: 5 },
-  { name: "John K.", text: "Best lounge experience in Eastern Uganda. The bar service is world-class.", rating: 5 },
-  { name: "Grace N.", text: "We had our wedding reception here. Everything was perfect. Highly recommend!", rating: 5 },
+  { name: "John K.", text: "The food was amazing and the service was top-notch. Will definitely come back!", rating: 5 },
+  { name: "Grace N.", text: "A beautiful and serene environment. Perfect for a weekend getaway with family.", rating: 5 },
 ];
 
 const Index = () => {
