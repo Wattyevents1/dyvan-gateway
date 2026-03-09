@@ -33,7 +33,24 @@ const fadeUp = {
 
 const Bar = () => {
   const [events, setEvents] = useState<Event[]>([]);
-  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const [lightbox, setLightbox] = useState<number | null>(null);
+
+  const navigateLightbox = (dir: number) => {
+    if (lightbox === null) return;
+    const next = (lightbox + dir + barImages.length) % barImages.length;
+    setLightbox(next);
+  };
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") navigateLightbox(-1);
+      else if (e.key === "ArrowRight") navigateLightbox(1);
+      else if (e.key === "Escape") setLightbox(null);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightbox]);
 
   useEffect(() => {
     const fetchData = async () => {
