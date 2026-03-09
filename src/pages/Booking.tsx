@@ -1,21 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import SectionHeading from "@/components/SectionHeading";
+import type { Tables } from "@/integrations/supabase/types";
 const heroBg = "/gallery/lounge-swings.jpg";
 
+type Cottage = Tables<"cottages">;
+
 const Booking = () => {
+  const [cottages, setCottages] = useState<Cottage[]>([]);
   const [form, setForm] = useState({
-    name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: "deluxe", payment: "pay-on-arrival",
+    name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: "", payment: "pay-on-arrival",
   });
 
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchCottages = async () => {
+      const { data } = await supabase
+        .from("cottages")
+        .select("*")
+        .eq("is_available", true)
+        .order("price_per_night");
+      if (data && data.length > 0) {
+        setCottages(data);
+        setForm((prev) => ({ ...prev, cottage: data[0].id }));
+      }
+    };
+    fetchCottages();
+  }, []);
+
+  const selectedCottage = cottages.find((c) => c.id === form.cottage);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    const nights =
+      form.checkin && form.checkout
+        ? Math.max(1, Math.ceil((new Date(form.checkout).getTime() - new Date(form.checkin).getTime()) / 86400000))
+        : 1;
+    const totalAmount = selectedCottage ? selectedCottage.price_per_night * nights : null;
+
     const { error } = await supabase.from("bookings").insert({
       guest_name: form.name,
       guest_email: form.email,
@@ -23,14 +51,16 @@ const Booking = () => {
       check_in: form.checkin,
       check_out: form.checkout,
       num_guests: parseInt(form.guests),
+      cottage_id: form.cottage || null,
       payment_method: form.payment,
+      total_amount: totalAmount,
     });
     setIsLoading(false);
     if (error) {
       toast.error("Failed to submit booking. Please try again.");
     } else {
       toast.success("Booking request submitted! We'll confirm via email shortly.");
-      setForm({ name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: "deluxe", payment: "pay-on-arrival" });
+      setForm({ name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: cottages[0]?.id || "", payment: "pay-on-arrival" });
     }
   };
 
@@ -77,17 +107,32 @@ const Booking = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm text-muted-foreground mb-1 block">Guests</label>
-                <input type="number" min="1" max="10" value={form.guests} onChange={update("guests")} className={inputClass} />
+                <input type="number" min="1" max={selectedCottage?.max_guests || 10} value={form.guests} onChange={update("guests")} className={inputClass} />
               </div>
               <div>
-                <label className="text-sm text-muted-foreground mb-1 block">Cottage Type</label>
+                <label className="text-sm text-muted-foreground mb-1 block">Room Type</label>
                 <select value={form.cottage} onChange={update("cottage")} className={inputClass}>
-                  <option value="deluxe">Deluxe Suite – $120/night</option>
-                  <option value="premium">Premium Suite – $180/night</option>
-                  <option value="family">Family Cottage – $250/night</option>
+                  {cottages.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name} – UGX {c.price_per_night.toLocaleString()}/night
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
+            {selectedCottage && (
+              <div className="bg-secondary/50 border border-gold/20 rounded-sm p-4 text-sm text-muted-foreground">
+                <p className="text-foreground font-semibold mb-1">{selectedCottage.name}</p>
+                {selectedCottage.description && <p className="mb-2">{selectedCottage.description}</p>}
+                <div className="flex flex-wrap gap-2">
+                  <span>Up to {selectedCottage.max_guests} guests</span>
+                  {selectedCottage.size_sqm && <span>• {selectedCottage.size_sqm} sqm</span>}
+                  {selectedCottage.amenities && selectedCottage.amenities.length > 0 && (
+                    <span>• {selectedCottage.amenities.join(", ")}</span>
+                  )}
+                </div>
+              </div>
+            )}
             <div>
               <label className="text-sm text-muted-foreground mb-1 block">Payment Method</label>
               <select value={form.payment} onChange={update("payment")} className={inputClass}>
@@ -96,8 +141,8 @@ const Booking = () => {
                 <option value="bank-transfer">Bank Transfer</option>
               </select>
             </div>
-            <button type="submit" className="bg-gradient-gold text-primary-foreground py-4 font-semibold uppercase tracking-wide text-sm rounded-sm hover:opacity-90 transition-opacity mt-2 shadow-gold">
-              Confirm Booking
+            <button type="submit" disabled={isLoading} className="bg-gradient-gold text-primary-foreground py-4 font-semibold uppercase tracking-wide text-sm rounded-sm hover:opacity-90 transition-opacity mt-2 shadow-gold disabled:opacity-50">
+              {isLoading ? "Submitting..." : "Confirm Booking"}
             </button>
           </motion.form>
         </div>
