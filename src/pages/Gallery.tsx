@@ -3,7 +3,7 @@ import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import SectionHeading from "@/components/SectionHeading";
-import heroBg from "@/assets/hero-bg.jpg";
+const heroBg = "/gallery/lounge-exterior-2.jpg";
 import { X } from "lucide-react";
 
 interface GalleryPhoto {
