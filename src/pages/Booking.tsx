@@ -12,7 +12,7 @@ type Cottage = Tables<"cottages">;
 const Booking = () => {
   const [cottages, setCottages] = useState<Cottage[]>([]);
   const [form, setForm] = useState({
-    name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: "", payment: "pay-on-arrival",
+    name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: "", payment: "cash",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +60,7 @@ const Booking = () => {
       toast.error("Failed to submit booking. Please try again.");
     } else {
       toast.success("Booking request submitted! We'll confirm via email shortly.");
-      setForm({ name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: cottages[0]?.id || "", payment: "pay-on-arrival" });
+      setForm({ name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: cottages[0]?.id || "", payment: "cash" });
     }
   };
 
@@ -136,9 +136,8 @@ const Booking = () => {
             <div>
               <label className="text-sm text-muted-foreground mb-1 block">Payment Method</label>
               <select value={form.payment} onChange={update("payment")} className={inputClass}>
-                <option value="pay-on-arrival">Pay on Arrival</option>
-                <option value="mobile-money">Mobile Money (MTN/Airtel)</option>
-                <option value="bank-transfer">Bank Transfer</option>
+                <option value="cash">Cash</option>
+                <option value="card">Card</option>
               </select>
             </div>
             <button type="submit" disabled={isLoading} className="bg-gradient-gold text-primary-foreground py-4 font-semibold uppercase tracking-wide text-sm rounded-sm hover:opacity-90 transition-opacity mt-2 shadow-gold disabled:opacity-50">
