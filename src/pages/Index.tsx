@@ -177,32 +177,6 @@ const Index = () => {
             ))}
           </div>
 
-          {/* Dynamic upcoming events */}
-          {events.length > 0 && (
-            <>
-              <div className="mt-16">
-                <SectionHeading subtitle="Coming Up" title="Upcoming Events" />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {events.map((ev, i) => (
-                  <motion.div key={ev.id} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.15 }} className="bg-card rounded-lg overflow-hidden border border-gold">
-                    {ev.poster_url && (
-                      <img src={ev.poster_url} alt={ev.title} className="w-full h-48 object-cover" />
-                    )}
-                    <div className="p-6">
-                      <div className="flex items-center gap-2 text-primary text-sm mb-2">
-                        <CalendarDays size={14} />
-                        <span>{new Date(ev.event_date).toLocaleDateString("en-UG", { weekday: "short", month: "short", day: "numeric" })}</span>
-                        {ev.event_time && <span>• {ev.event_time}</span>}
-                      </div>
-                      <h3 className="font-heading text-xl font-bold text-foreground">{ev.title}</h3>
-                      {ev.description && <p className="text-muted-foreground text-sm mt-2 line-clamp-3">{ev.description}</p>}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </>
-          )}
         </div>
       </section>
 
