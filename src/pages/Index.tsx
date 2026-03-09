@@ -12,7 +12,6 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Cottage = Tables<"cottages">;
-type MenuItem = Tables<"menu_items">;
 type Event = Tables<"events">;
 
 const fadeUp = {
