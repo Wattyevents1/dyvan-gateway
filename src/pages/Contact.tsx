@@ -5,7 +5,7 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import SectionHeading from "@/components/SectionHeading";
-import heroBg from "@/assets/hero-bg.jpg";
+const heroBg = "/gallery/lounge-exterior-3.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 40 },

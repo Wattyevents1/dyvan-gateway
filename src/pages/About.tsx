@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import SEO from "@/components/SEO";
 import SectionHeading from "@/components/SectionHeading";
-import heroBg from "@/assets/hero-bg.jpg";
-import restaurant from "@/assets/restaurant.jpg";
-import bar from "@/assets/bar.jpg";
-import cottage1 from "@/assets/cottage-1.jpg";
-import cottage2 from "@/assets/cottage-2.jpg";
+const heroBg = "/gallery/lounge-exterior-1.jpg";
+const restaurant = "/gallery/restaurant-interior.jpg";
+const bar = "/gallery/bar-menu-cocktails.jpg";
+const cottage1 = "/gallery/cottage-exterior-path.jpg";
+const cottage2 = "/gallery/cottage-bedroom-blue.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 40 },
