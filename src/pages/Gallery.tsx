@@ -156,7 +156,7 @@ const Gallery = () => {
 
       {/* Lightbox */}
       <AnimatePresence>
-        {lightbox && (
+        {lightbox !== null && filtered[lightbox] && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -164,13 +164,25 @@ const Gallery = () => {
             className="fixed inset-0 z-50 bg-background/95 flex items-center justify-center p-4"
             onClick={() => setLightbox(null)}
           >
-            <button className="absolute top-6 right-6 text-foreground hover:text-primary" onClick={() => setLightbox(null)}>
+            <button className="absolute top-6 right-6 text-foreground hover:text-primary z-10" onClick={() => setLightbox(null)}>
               <X size={28} />
             </button>
-            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="max-w-4xl max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
-              <img src={lightbox.image_url} alt={lightbox.caption || "Gallery photo"} className="max-w-full max-h-[80vh] object-contain rounded-lg" />
-              {lightbox.caption && (
-                <p className="text-center text-foreground/80 mt-4 text-sm">{lightbox.caption}</p>
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/70 hover:text-primary bg-background/50 rounded-full p-2 z-10"
+              onClick={(e) => { e.stopPropagation(); navigateLightbox(-1); }}
+            >
+              <ChevronLeft size={32} />
+            </button>
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/70 hover:text-primary bg-background/50 rounded-full p-2 z-10"
+              onClick={(e) => { e.stopPropagation(); navigateLightbox(1); }}
+            >
+              <ChevronRight size={32} />
+            </button>
+            <motion.div key={lightbox} initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="max-w-4xl max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
+              <img src={filtered[lightbox].image_url} alt={filtered[lightbox].caption || "Gallery photo"} className="max-w-full max-h-[80vh] object-contain rounded-lg" />
+              {filtered[lightbox].caption && (
+                <p className="text-center text-foreground/80 mt-4 text-sm">{filtered[lightbox].caption}</p>
               )}
             </motion.div>
           </motion.div>
