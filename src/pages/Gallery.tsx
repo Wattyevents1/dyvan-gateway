@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import SectionHeading from "@/components/SectionHeading";
 const heroBg = "/gallery/lounge-exterior-2.jpg";
-import { X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface GalleryPhoto {
   id: string;
@@ -26,8 +26,30 @@ const Gallery = () => {
   const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("All");
-  const [lightbox, setLightbox] = useState<GalleryPhoto | null>(null);
+  const [lightbox, setLightbox] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+
+  const categories = ["All", ...new Set(photos.map((p) => p.category))];
+  const filtered = active === "All" ? photos : photos.filter((p) => p.category === active);
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+
+  const navigateLightbox = (dir: number) => {
+    if (lightbox === null) return;
+    const next = (lightbox + dir + filtered.length) % filtered.length;
+    setLightbox(next);
+  };
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") navigateLightbox(-1);
+      else if (e.key === "ArrowRight") navigateLightbox(1);
+      else if (e.key === "Escape") setLightbox(null);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightbox, filtered]);
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -43,15 +65,10 @@ const Gallery = () => {
     fetchPhotos();
   }, []);
 
-  // Reset visible count when category changes
   useEffect(() => {
     setVisibleCount(ITEMS_PER_PAGE);
   }, [active]);
 
-  const categories = ["All", ...new Set(photos.map((p) => p.category))];
-  const filtered = active === "All" ? photos : photos.filter((p) => p.category === active);
-  const visible = filtered.slice(0, visibleCount);
-  const hasMore = visibleCount < filtered.length;
 
   return (
     <div>
@@ -102,7 +119,7 @@ const Gallery = () => {
                     {...fadeUp}
                     transition={{ delay: Math.min(i, 6) * 0.05 }}
                     className="break-inside-avoid cursor-pointer group"
-                    onClick={() => setLightbox(photo)}
+                    onClick={() => setLightbox(filtered.indexOf(photo))}
                   >
                     <div className="rounded-lg overflow-hidden border border-gold relative">
                       <img
@@ -139,7 +156,7 @@ const Gallery = () => {
 
       {/* Lightbox */}
       <AnimatePresence>
-        {lightbox && (
+        {lightbox !== null && filtered[lightbox] && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -147,13 +164,25 @@ const Gallery = () => {
             className="fixed inset-0 z-50 bg-background/95 flex items-center justify-center p-4"
             onClick={() => setLightbox(null)}
           >
-            <button className="absolute top-6 right-6 text-foreground hover:text-primary" onClick={() => setLightbox(null)}>
+            <button className="absolute top-6 right-6 text-foreground hover:text-primary z-10" onClick={() => setLightbox(null)}>
               <X size={28} />
             </button>
-            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="max-w-4xl max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
-              <img src={lightbox.image_url} alt={lightbox.caption || "Gallery photo"} className="max-w-full max-h-[80vh] object-contain rounded-lg" />
-              {lightbox.caption && (
-                <p className="text-center text-foreground/80 mt-4 text-sm">{lightbox.caption}</p>
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/70 hover:text-primary bg-background/50 rounded-full p-2 z-10"
+              onClick={(e) => { e.stopPropagation(); navigateLightbox(-1); }}
+            >
+              <ChevronLeft size={32} />
+            </button>
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/70 hover:text-primary bg-background/50 rounded-full p-2 z-10"
+              onClick={(e) => { e.stopPropagation(); navigateLightbox(1); }}
+            >
+              <ChevronRight size={32} />
+            </button>
+            <motion.div key={lightbox} initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="max-w-4xl max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
+              <img src={filtered[lightbox].image_url} alt={filtered[lightbox].caption || "Gallery photo"} className="max-w-full max-h-[80vh] object-contain rounded-lg" />
+              {filtered[lightbox].caption && (
+                <p className="text-center text-foreground/80 mt-4 text-sm">{filtered[lightbox].caption}</p>
               )}
             </motion.div>
           </motion.div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
-import { Music, Calendar, Clock, X } from "lucide-react";
+import { Music, Calendar, Clock, X, ChevronLeft, ChevronRight } from "lucide-react";
 import SectionHeading from "@/components/SectionHeading";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
@@ -33,7 +33,24 @@ const fadeUp = {
 
 const Bar = () => {
   const [events, setEvents] = useState<Event[]>([]);
-  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const [lightbox, setLightbox] = useState<number | null>(null);
+
+  const navigateLightbox = (dir: number) => {
+    if (lightbox === null) return;
+    const next = (lightbox + dir + barImages.length) % barImages.length;
+    setLightbox(next);
+  };
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") navigateLightbox(-1);
+      else if (e.key === "ArrowRight") navigateLightbox(1);
+      else if (e.key === "Escape") setLightbox(null);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightbox]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,7 +84,7 @@ const Bar = () => {
           <SectionHeading subtitle="Gallery" title="Our Space" description="Take a look at our bar and lounge." />
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
             {barImages.map((img, i) => (
-              <motion.div key={i} {...fadeUp} transition={{ delay: Math.min(i, 6) * 0.05 }} className="break-inside-avoid cursor-pointer group" onClick={() => setLightbox(img)}>
+              <motion.div key={i} {...fadeUp} transition={{ delay: Math.min(i, 6) * 0.05 }} className="break-inside-avoid cursor-pointer group" onClick={() => setLightbox(i)}>
                 <div className="rounded-lg overflow-hidden border border-gold">
                   <img src={img.src} alt={img.alt} className="w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                 </div>
@@ -106,7 +123,7 @@ const Bar = () => {
 
       {/* Lightbox */}
       <AnimatePresence>
-        {lightbox && (
+        {lightbox !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -114,12 +131,24 @@ const Bar = () => {
             className="fixed inset-0 z-50 bg-background/95 flex items-center justify-center p-4"
             onClick={() => setLightbox(null)}
           >
-            <button className="absolute top-6 right-6 text-foreground hover:text-primary" onClick={() => setLightbox(null)}>
+            <button className="absolute top-6 right-6 text-foreground hover:text-primary z-10" onClick={() => setLightbox(null)}>
               <X size={28} />
             </button>
-            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="max-w-4xl max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
-              <img src={lightbox.src} alt={lightbox.alt} className="max-w-full max-h-[80vh] object-contain rounded-lg" />
-              <p className="text-center text-foreground/80 mt-4 text-sm">{lightbox.alt}</p>
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/70 hover:text-primary bg-background/50 rounded-full p-2 z-10"
+              onClick={(e) => { e.stopPropagation(); navigateLightbox(-1); }}
+            >
+              <ChevronLeft size={32} />
+            </button>
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/70 hover:text-primary bg-background/50 rounded-full p-2 z-10"
+              onClick={(e) => { e.stopPropagation(); navigateLightbox(1); }}
+            >
+              <ChevronRight size={32} />
+            </button>
+            <motion.div key={lightbox} initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="max-w-4xl max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
+              <img src={barImages[lightbox].src} alt={barImages[lightbox].alt} className="max-w-full max-h-[80vh] object-contain rounded-lg" />
+              <p className="text-center text-foreground/80 mt-4 text-sm">{barImages[lightbox].alt}</p>
             </motion.div>
           </motion.div>
         )}
