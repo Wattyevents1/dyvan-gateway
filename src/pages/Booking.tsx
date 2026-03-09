@@ -60,7 +60,7 @@ const Booking = () => {
       toast.error("Failed to submit booking. Please try again.");
     } else {
       toast.success("Booking request submitted! We'll confirm via email shortly.");
-      setForm({ name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: cottages[0]?.id || "", payment: "pay-on-arrival" });
+      setForm({ name: "", email: "", phone: "", checkin: "", checkout: "", guests: "1", cottage: cottages[0]?.id || "", payment: "cash" });
     }
   };
 
