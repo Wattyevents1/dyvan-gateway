@@ -29,6 +29,11 @@ const Gallery = () => {
   const [lightbox, setLightbox] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
+  const categories = ["All", ...new Set(photos.map((p) => p.category))];
+  const filtered = active === "All" ? photos : photos.filter((p) => p.category === active);
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+
   const navigateLightbox = (dir: number) => {
     if (lightbox === null) return;
     const next = (lightbox + dir + filtered.length) % filtered.length;
@@ -60,14 +65,9 @@ const Gallery = () => {
     fetchPhotos();
   }, []);
 
-  // Reset visible count when category changes
   useEffect(() => {
     setVisibleCount(ITEMS_PER_PAGE);
   }, [active]);
-
-  const categories = ["All", ...new Set(photos.map((p) => p.category))];
-  const filtered = active === "All" ? photos : photos.filter((p) => p.category === active);
-  const visible = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
 
   return (
