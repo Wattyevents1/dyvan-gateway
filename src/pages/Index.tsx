@@ -39,15 +39,18 @@ const testimonials = [
 const Index = () => {
   const [cottages, setCottages] = useState<Cottage[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
+  const [weeklyEvents, setWeeklyEvents] = useState<WeeklyEvent[]>([]);
 
   useEffect(() => {
     const fetchAll = async () => {
-      const [cottageRes, eventRes] = await Promise.all([
+      const [cottageRes, eventRes, weeklyRes] = await Promise.all([
         supabase.from("cottages").select("*").eq("is_available", true).order("price_per_night").limit(3),
         supabase.from("events").select("*").eq("is_active", true).gte("event_date", new Date().toISOString().split("T")[0]).order("event_date").limit(3),
+        supabase.from("weekly_events" as any).select("*").eq("is_active", true).order("sort_order"),
       ]);
       setCottages(cottageRes.data || []);
       setEvents(eventRes.data || []);
+      setWeeklyEvents((weeklyRes.data as WeeklyEvent[]) || []);
     };
     fetchAll();
   }, []);
