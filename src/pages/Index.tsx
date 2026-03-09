@@ -33,13 +33,11 @@ const Index = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
-      const [cottageRes, menuRes, eventRes] = await Promise.all([
+      const [cottageRes, eventRes] = await Promise.all([
         supabase.from("cottages").select("*").eq("is_available", true).order("price_per_night").limit(3),
-        supabase.from("menu_items").select("*").eq("is_available", true).order("created_at", { ascending: false }).limit(6),
         supabase.from("events").select("*").eq("is_active", true).gte("event_date", new Date().toISOString().split("T")[0]).order("event_date").limit(3),
       ]);
       setCottages(cottageRes.data || []);
-      setMenuItems(menuRes.data || []);
       setEvents(eventRes.data || []);
     };
     fetchAll();
