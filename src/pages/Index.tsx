@@ -148,7 +148,7 @@ const Index = () => {
             {cottages.map((c, i) => (
               <motion.div key={c.id} {...fadeUp} transition={{ duration: 0.7, delay: i * 0.15 }} className="bg-card rounded-lg overflow-hidden border border-gold group">
                 <div className="overflow-hidden h-56">
-                  <img src={c.image_url || cottage1} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img src={c.image_url || cottage1} alt={c.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-6">
                   <div className="flex justify-between items-start">
@@ -162,8 +162,21 @@ const Index = () => {
                 </div>
               </motion.div>
             ))}
-            {cottages.length === 0 && (
-              <div className="md:col-span-3 text-center text-muted-foreground py-8">Loading cottages...</div>
+            {cottagesLoading && cottages.length === 0 && (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={`s-${i}`} className="bg-card rounded-lg overflow-hidden border border-gold">
+                  <div className="h-56 bg-muted animate-pulse" />
+                  <div className="p-6 space-y-3">
+                    <div className="h-5 bg-muted animate-pulse rounded w-2/3" />
+                    <div className="h-4 bg-muted animate-pulse rounded w-full" />
+                    <div className="h-4 bg-muted animate-pulse rounded w-5/6" />
+                    <div className="h-9 bg-muted animate-pulse rounded w-32 mt-2" />
+                  </div>
+                </div>
+              ))
+            )}
+            {!cottagesLoading && cottages.length === 0 && (
+              <div className="md:col-span-3 text-center text-muted-foreground py-8">No cottages available right now.</div>
             )}
           </div>
         </div>
