@@ -37,19 +37,34 @@ const testimonials = [
 
 const Index = () => {
   const [cottages, setCottages] = useState<Cottage[]>([]);
-  
+  const [cottagesLoading, setCottagesLoading] = useState(true);
   const [weeklyEvents, setWeeklyEvents] = useState<WeeklyEvent[]>([]);
 
   useEffect(() => {
-    const fetchAll = async () => {
-      const [cottageRes, weeklyRes] = await Promise.all([
-        supabase.from("cottages").select("*").eq("is_available", true).order("price_per_night").limit(3),
-        supabase.from("weekly_events" as any).select("*").eq("is_active", true).order("sort_order"),
-      ]);
-      setCottages(cottageRes.data || []);
-      setWeeklyEvents((weeklyRes.data as unknown as WeeklyEvent[]) || []);
-    };
-    fetchAll();
+    let cancelled = false;
+    // Fetch independently so a slow query doesn't block the other
+    supabase
+      .from("cottages")
+      .select("id,name,description,image_url,price_per_night")
+      .eq("is_available", true)
+      .order("price_per_night")
+      .limit(3)
+      .then(({ data }) => {
+        if (cancelled) return;
+        setCottages((data as unknown as Cottage[]) || []);
+        setCottagesLoading(false);
+      });
+
+    supabase
+      .from("weekly_events" as any)
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order")
+      .then(({ data }) => {
+        if (!cancelled) setWeeklyEvents((data as unknown as WeeklyEvent[]) || []);
+      });
+
+    return () => { cancelled = true; };
   }, []);
 
   return (
