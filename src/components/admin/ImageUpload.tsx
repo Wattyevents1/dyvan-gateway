@@ -38,6 +38,7 @@ const ImageUpload = ({ value, onChange, folder, className = "" }: ImageUploadPro
 
     const { data: urlData } = supabase.storage.from("images").getPublicUrl(fileName);
     onChange(urlData.publicUrl);
+    if (fileInputRef.current) fileInputRef.current.value = "";
     setUploading(false);
     toast.success("Image uploaded");
   };
@@ -56,13 +57,17 @@ const ImageUpload = ({ value, onChange, folder, className = "" }: ImageUploadPro
 
   const handleRemove = async () => {
     if (value) {
-      // Extract path from URL
-      const url = new URL(value);
-      const pathMatch = url.pathname.match(/\/storage\/v1\/object\/public\/images\/(.+)/);
-      if (pathMatch) {
-        await supabase.storage.from("images").remove([pathMatch[1]]);
+      try {
+        const url = new URL(value, window.location.origin);
+        const pathMatch = url.pathname.match(/\/storage\/v1\/object\/public\/images\/(.+)/);
+        if (pathMatch) {
+          await supabase.storage.from("images").remove([decodeURIComponent(pathMatch[1])]);
+        }
+      } catch {
+        // Relative or non-storage path; just clear the field
       }
     }
+    if (fileInputRef.current) fileInputRef.current.value = "";
     onChange("");
   };
 
